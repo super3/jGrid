@@ -1,0 +1,85 @@
+<!--Source: http://super3.org/code-->
+<html>
+<head>
+	<title>jGrid</title>
+	<script type="text/javascript">
+		//Settings vars	
+		defaultcolor = "red"; //Default Color of Grid Spaces
+		newcolor = "black"; //Color of Activated Grid Spaces
+		
+		//Holds the last selected location
+		lastX = -1; lastY = -1;
+	
+		//Prints the grid using CSS formatted DIVS
+		function showGrid(x, y) {
+			for(e=0; e < y; e++) {
+				document.write("<div class='col'>");
+				for(i=0; i < x; i++) {
+				document.write("<div class='row' onclick='clickme(" + i + "," + e + ")' id='g" + i + e + "'>(" + i + "," + e +")</div>");
+				}
+				document.write("</div>");
+			}
+		}
+		//Changes the color of a selected grid space to NEWCOLOR 
+		function changeColor(x, y) {
+			document.getElementById("g"+x+""+y).style.backgroundColor = newcolor;
+		}
+		//Moves a selected grid space to another location
+		function moveColor(x1, y1, x2, y2) {
+			document.getElementById("g"+x1+""+y1).style.backgroundColor = defaultcolor;
+			document.getElementById("g"+x2+""+y2).style.backgroundColor = newcolor;
+		}
+		//Not Functional. Supposed to change the background image of a grid space
+		function changeImage(x, y, img) {
+			document.getElementById("g"+x+""+y).style.backgroundImage = "url('test.png')";
+		}
+		//Receives the onClick event. 
+		function clickme(x, y) { 
+			//Print Grid Location Pressed
+				//alert("You clicked on (" + x + "," + y + ")"); 
+			
+			//Change Color
+				//changeColor(x, y);
+				
+			//Move a Block to another Spot
+				if(document.getElementById("g"+x+""+y).style.backgroundColor == defaultcolor) {}
+				else if(lastX == -1 || lastY == -1) {
+					lastX = x;
+					lastY = y;
+				}
+				else {
+					moveColor(lastX, lastY, x, y);
+					lastX = -1;
+					lastY = -1;
+				}
+		}
+	</script>
+	<style type="text/css">
+	.row {
+		height: 100px;
+		width: 100px;
+		background-color: red;
+		float: left;
+	}
+	.col {
+		height: 100px;
+	}
+	.center {
+		width: 500px;
+		margin:0px auto;
+	}
+	</style>
+</head>
+<body>
+	<div class="center">
+		<script type="text/javascript">
+			//Show Default Grid
+			showGrid(5,5);
+			//Add a Black Square
+			changeColor(1,1);
+			//Change Image
+			changeImage(0,0, "test");
+		</script>
+	</div>
+</body>
+</html>
