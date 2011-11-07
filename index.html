@@ -1,0 +1,68 @@
+<!-- XoDG -->
+<html>
+    <head>
+        <title>jGrid</title>
+        <link rel="stylesheet" type="text/css" href="global.css" />
+    </head>
+    
+    <body>
+    	<div id="viewport">
+        	<div id="mooGrid">Loading...</div>
+        </div>
+        
+        <!-- All script tags should go at the bottom of the body -->
+        <script type="text/javascript" src="mootools-core-1.4.1-full-nocompat.js"></script>
+        <script type="text/javascript" src="mooGrid.js"></script>
+        
+        <script type="text/javascript">
+			window.addEvent('domready', function()
+			{
+				(function()
+				{
+					var ctrlHeldDown = false,
+						mouseHeldDown = false;
+					
+					// Let's have a little fun, shall we?
+					DOMEvent.defineKey(17, 'ctrl');
+					window.addEvent('keydown', function(e){ if(e.key == 'ctrl') ctrlHeldDown = true; });
+					window.addEvent('keyup', function(e){ if(e.key == 'ctrl') ctrlHeldDown = false; });
+					window.addEvent('mousedown', function(e){ mouseHeldDown = true; });
+					window.addEvent('mouseup', function(e){ mouseHeldDown = false; });
+					
+					var grid = new MooGrid({
+						rows: 50, // Try any numbers here!
+						cols: 50, // Try any numbers here!
+						
+						onCellClick: function(event, cell)
+						{
+							event.preventDefault();
+							var notHasClass = !cell.hasClass('active');
+							
+							if(!ctrlHeldDown && notHasClass)
+								$$('.mooGrid-cell.active').removeClass('active');
+							
+							/*if(notHasClass)
+							{*/
+								cell.addClass('active');
+								/*console.log('hello: ', String.uniqueID());
+							}*/
+						},
+						
+						// Allows for clicking and dragging
+						onCellMouseover: function(event, cell)
+						{
+							event.preventDefault();
+							if(ctrlHeldDown && mouseHeldDown)
+								cell.addClass('active');
+						}
+					});
+					
+					grid.draw();
+					if(console && console.log) console.log('grid.getCell(0,0) ->', grid.getCell(0,0));
+					
+					console.warn('Instructions: \n\nUse your mouse to click on blocks.\n\nHold down the ctrl key while clicking to select multiple blocks.\n\nClick and drag whilst holding down the ctrl key to select many blocks simultaneously.');
+				}).delay(500); // The "delay(500)" forces the browser to take a break and render the page before starting our badass JS
+			});
+		</script>
+    </body>
+</html>
